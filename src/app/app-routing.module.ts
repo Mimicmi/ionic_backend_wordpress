@@ -4,20 +4,20 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule)
+    loadChildren: () => import('./home/home.module').then(m => m.HomePageModule)
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'posts',
     pathMatch: 'full'
   },
   {
     path: 'posts',
-    loadChildren: () => import('./pages/posts/posts.module').then( m => m.PostsPageModule)
+    loadChildren: () => import('./pages/posts/posts.module').then(m => m.PostsPageModule)
   },
   {
-    path: 'post-details',
-    loadChildren: () => import('./pages/post-details/post-details.module').then( m => m.PostDetailsPageModule)
+    path: 'posts/:id',
+    loadChildren: () => import('./pages/post-details/post-details.module').then(m => m.PostDetailsPageModule)
   },
 ];
 

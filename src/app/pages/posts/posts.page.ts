@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-posts',
@@ -7,9 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostsPage implements OnInit {
 
-  constructor() { }
+  page = 1;
+  posts = [];
+  totalPosts = 0;
 
-  ngOnInit() {
+  constructor(private api: ApiService) { }
+
+
+  loadPosts() {
+    this.api.getPosts(this.page).subscribe((res) => {
+      this.totalPosts = res.totalPosts;
+      this.posts = res.posts;
+      console.log('loadPosts: ', res);
+    });
   }
 
+  ngOnInit() {
+    this.loadPosts();
+  }
 }
