@@ -1,12 +1,15 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>posts</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>The News</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div *ngIf="totalPosts > 0" class="ion-text-center ion-padding">
-    {{ totalPosts }} News
+    Found {{ totalPosts }} News
   </div>
 
   <ion-card *ngFor="let post of posts">

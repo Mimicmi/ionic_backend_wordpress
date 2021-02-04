@@ -16,7 +16,10 @@
 
   <ion-footer>
     <ion-toolbar>
-      <ion-button color="light" filter="clear" (click)="sharePost()" expand="block">Share this post</ion-button>
+      <ion-button color="light" filter="clear" (click)="sharePost()" expand="block">
+        <ion-icon name="share" slot="start"></ion-icon>
+        Share this post
+      </ion-button>
     </ion-toolbar>
   </ion-footer>
 </ion-content>
