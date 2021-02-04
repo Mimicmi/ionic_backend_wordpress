@@ -48,6 +48,9 @@ export class PostsPage implements OnInit {
       this.totalPosts = res.totalPosts;
       console.log('loadPosts: ', res);
 
+    }, err => {
+      console.log('Error in loadPosts', err)
+    }, () => {
       if (!infiniteScroll) {
         loading.dismiss();
       }

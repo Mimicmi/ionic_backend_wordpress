@@ -1,9 +1,22 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>postDetails</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/posts"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ post?.title.rendered }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
 
+  <div *ngIf="post">
+    <ion-img *ngIf="post.media_url" [src]="post.media_url"></ion-img>
+    <div [innerHTML]="post.content.rendered"></div>
+  </div>
+
+  <ion-footer>
+    <ion-toolbar>
+      <ion-button color="light" filter="clear" (click)="sharePost()" expand="block">Share this post</ion-button>
+    </ion-toolbar>
+  </ion-footer>
 </ion-content>

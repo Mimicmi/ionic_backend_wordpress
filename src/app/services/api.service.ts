@@ -39,4 +39,16 @@ export class ApiService {
     );
   }
 
+  getPostContent(id) {
+    return this.http.get<any>(environment.apiUrl + 'posts/' + id + '?_embed')
+      .pipe(
+        map((post) => {
+          if (post['_embedded']['wp:featuredmedia']) {
+            post.media_url = post['_embedded']['wp:featuredmedia']
+            [0]['media_details'].sizes['medium'].source_url;
+          }
+          return post;
+        })
+      );
+  }
 }
