@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api.service';
+import { LoadingController } from '@ionic/angular';
+
 
 @Component({
   selector: 'app-posts',
@@ -12,14 +14,22 @@ export class PostsPage implements OnInit {
   posts = [];
   totalPosts = 0;
 
-  constructor(private api: ApiService) { }
+  constructor(private api: ApiService,
+    public loadingCtrl: LoadingController
+  ) { }
 
 
-  loadPosts() {
+  async loadPosts() {
+    const loading = await this.loadingCtrl.create({
+      message: "loading posts"
+    });
+    await loading.present();
+
     this.api.getPosts(this.page).subscribe((res) => {
       this.totalPosts = res.totalPosts;
       this.posts = res.posts;
       console.log('loadPosts: ', res);
+      loading.dismiss();
     });
   }
 
