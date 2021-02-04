@@ -19,6 +19,10 @@ const routes: Routes = [
     path: 'posts/:id',
     loadChildren: () => import('./pages/post-details/post-details.module').then(m => m.PostDetailsPageModule)
   },
+  {
+    path: 'category-filter',
+    loadChildren: () => import('./pages/category-filter/category-filter.module').then( m => m.CategoryFilterPageModule)
+  },
 ];
 
 @NgModule({
