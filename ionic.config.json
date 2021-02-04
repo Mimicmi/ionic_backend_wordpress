@@ -1,0 +1,7 @@
+{
+  "name": "ionic_backend_wordpress",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
