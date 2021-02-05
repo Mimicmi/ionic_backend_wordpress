@@ -1,15 +1,55 @@
 import { Injectable } from '@angular/core';
 import { environment } from './../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { Storage } from '@ionic/storage';
+import { Platform } from '@ionic/angular';
+
+const JWT_KEY = 'jwt_token';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
+  private user = new BehaviorSubject(null);
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private storage: Storage,
+    private platform: Platform
+  ) {
+    this.platform.ready().then(() => {
+      this.storage.get(JWT_KEY).then((data) => {
+        if (data) {
+          console.log('JWT', data);
+          this.user.next(data);
+        }
+      });
+    });
+  }
+
+  getCurrentUser() {
+    return this.user.asObservable();
+  }
+
+  logout() {
+    this.storage.remove(JWT_KEY).then(() => {
+      this.user.next(null);
+    });
+  }
+
+  signIn(username, password) {
+    return this.http.post(environment.authUrl + 'token', { username, password })
+      .pipe(
+        switchMap((data) => {
+          return (this.storage.set(JWT_KEY, data));
+        }),
+        tap((data) => {
+          this.user.next(data);
+        })
+      );
+  }
 
   getPosts(page = 1, categoryId = null, search = ''): Observable<any> {
 

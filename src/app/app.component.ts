@@ -20,6 +20,11 @@ export class AppComponent {
       title: 'The News',
       url: '/posts',
       icon: 'newspaper'
+    },
+    {
+      title: 'Account',
+      url: '/account',
+      icon: 'person'
     }
   ]
 

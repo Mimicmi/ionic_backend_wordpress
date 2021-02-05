@@ -11,6 +11,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { CategoryFilterPageModule } from './pages/category-filter/category-filter.module';
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
+import { IonicStorageModule } from '@ionic/storage';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -20,7 +22,8 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    CategoryFilterPageModule
+    CategoryFilterPageModule,
+    IonicStorageModule.forRoot()
 
   ],
   providers: [OneSignal, { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
