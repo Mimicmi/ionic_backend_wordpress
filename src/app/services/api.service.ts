@@ -11,7 +11,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  getPosts(page = 1): Observable<any> {
+  getPosts(page = 1, categoryId = null): Observable<any> {
 
     const options = {
       observe: "response" as "body",
@@ -21,7 +21,11 @@ export class ApiService {
       }
     }
 
-    return this.http.get(environment.apiUrl + 'posts?_embed', options).pipe(
+    let URL = environment.apiUrl + 'posts?_embed';
+
+    if (categoryId) URL += '&categories=' + categoryId;
+
+    return this.http.get(URL, options).pipe(
       map((res) => {
         const data = res['body'];
         for (let post of data) {
