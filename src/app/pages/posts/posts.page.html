@@ -4,18 +4,31 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>The News</ion-title>
+
     <ion-buttons slot="end">
       <ion-button (click)="openFilter($event)">
-        <ion-icon name="pricetag" slot="icon-only"></ion-icon>
+        <div><span class="ion-text-center" *ngIf="categoryName != '' && categoryName != 'All'">in
+            {{ categoryName }}</span></div>
+        <ion-icon [name]="categoryFilter ? 'pricetag' : 'pricetag-outline'"></ion-icon>
       </ion-button>
     </ion-buttons>
+
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div *ngIf="totalPosts > 0" class="ion-text-center ion-padding">
-    Found {{ totalPosts }} News
+
+  <ion-searchbar animated="true" debounce="1000" [(ngModel)]="searchTerm" (ionChange)="searchChanged()"></ion-searchbar>
+
+  <div *ngIf="totalPosts > 0 else elseBlock" class="ion-text-center ion-padding">
+    Found {{ totalPosts }} News <span *ngIf="categoryName != '' && categoryName != 'All'">in {{ categoryName }}</span>
   </div>
+
+  <ng-template #elseBlock>
+
+    <div>No Result Found</div>
+
+  </ng-template>
 
   <ion-card *ngFor="let post of posts">
     <ion-card-header>
@@ -23,7 +36,7 @@
       <ion-card-subtitle>{{ post.date_gmt | date }}</ion-card-subtitle>
     </ion-card-header>
     <ion-card-content>
-      <img [src]="post.media_url" *ngIf="post.media_url" class="post-img">
+      <ion-img (click)="readPost(post.id)" [src]="post.media_url" *ngIf="post.media_url" class="post-img"></ion-img>
       <div [innerHTML]="post.excerpt.rendered"></div>
       <ion-button expand="full" [routerLink]="'/posts/' + post.id" text-right>Read More...</ion-button>
     </ion-card-content>

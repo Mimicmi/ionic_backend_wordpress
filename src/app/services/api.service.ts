@@ -11,7 +11,7 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  getPosts(page = 1, categoryId = null): Observable<any> {
+  getPosts(page = 1, categoryId = null, search = ''): Observable<any> {
 
     const options = {
       observe: "response" as "body",
@@ -24,6 +24,10 @@ export class ApiService {
     let URL = environment.apiUrl + 'posts?_embed';
 
     if (categoryId) URL += '&categories=' + categoryId;
+
+    if (search != '') URL += '&search=' + search;
+    console.log('getPosts URL: ', URL);
+
 
     return this.http.get(URL, options).pipe(
       map((res) => {
@@ -69,6 +73,38 @@ export class ApiService {
             });
           }
           return items;
+        })
+      );
+  }
+
+  getPages() {
+    return this.http.get<any>(environment.apiUrl + 'pages')
+      .pipe(
+        map((res) => {
+          const items = [];
+          const matches = [12, 10, 3, 2];
+          for (let item of res) {
+            if (!matches.includes(item.id)) continue;
+            items.push({
+              url: 'page/' + item.id,
+              title: item.title.rendered,
+              icon: 'file-tray',
+            });
+          }
+          return items;
+        })
+      );
+  }
+
+  getPageContent(id) {
+    return this.http.get<any>(environment.apiUrl + 'pages/' + id + '?_embed')
+      .pipe(
+        map((pages) => {
+          if (pages['_embedded']['wp:featuredmedia']) {
+            pages.media_url = pages['_embedded']['wp:featuredmedia']
+            [0]['media_details'].sizes['medium'].source_url;
+          }
+          return pages;
         })
       );
   }

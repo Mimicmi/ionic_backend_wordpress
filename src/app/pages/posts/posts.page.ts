@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { LoadingController, PopoverController } from '@ionic/angular';
 import { CategoryFilterPage } from '../category-filter/category-filter.page';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -16,10 +17,14 @@ export class PostsPage implements OnInit {
   totalPosts = 0;
   totalPages = 0;
   categoryFilter = null;
+  searchTerm = '';
+  categoryName = '';
 
-  constructor(private api: ApiService,
+  constructor(
+    private api: ApiService,
     private loadingCtrl: LoadingController,
-    private popOver: PopoverController
+    private popOver: PopoverController,
+    private router: Router
   ) { }
 
 
@@ -34,7 +39,7 @@ export class PostsPage implements OnInit {
       await loading.present();
     }
 
-    this.api.getPosts(this.page, this.categoryFilter).subscribe((res) => {
+    this.api.getPosts(this.page, this.categoryFilter, this.searchTerm).subscribe((res) => {
 
       if (infiniteScroll) {
         infiniteScroll.target.complete();
@@ -78,11 +83,22 @@ export class PostsPage implements OnInit {
       console.log('after popover', res);
       if (res && res.data) {
         this.categoryFilter = res.data.id;
+        this.categoryName = res.data.name;
         this.loadPosts();
         this.page = 1;
       }
     })
     await popover.present();
+  }
+
+  searchChanged() {
+    console.log('searchTerm', this.searchTerm);
+    this.page = 1;
+    this.loadPosts();
+  }
+
+  readPost(id) {
+    this.router.navigateByUrl('/posts/' + id);
   }
 
   ngOnInit() {

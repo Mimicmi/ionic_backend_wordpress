@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ApiService } from './services/api.service';
 
 @Component({
   selector: 'app-root',
@@ -6,7 +7,7 @@ import { Component } from '@angular/core';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor() { }
+  constructor(private api: ApiService) { }
 
   appPages = [
     {
@@ -15,4 +16,11 @@ export class AppComponent {
       icon: 'newspaper'
     }
   ]
+
+  ngOnInit() {
+    this.api.getPages().subscribe((pages) => {
+      console.log('OnInit Pages Wordpress', pages);
+      this.appPages = [...this.appPages, ...pages];
+    });
+  }
 }
